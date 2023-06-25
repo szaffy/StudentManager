@@ -1,6 +1,6 @@
 public class App {
     public static void main(String[] args){
-        Student student = new Student("John", "Doe", 3);
+        Student student = new Student("Jennet", "Doe", 6);
         student.addNewStudent(student);
     }
     

@@ -1,0 +1,5 @@
+src/**/trials
+bin/
+*.jar
+.vscode/**/*
+!.vscode/settings.json
