@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Year;
 
+import javax.xml.crypto.Data;
+
 public class Student {
     private int studentId;
     private String firstName;
@@ -67,7 +69,7 @@ public class Student {
         try {
             Connection connection = DatabaseConnector.getConnection();
             //check if payment already exists
-            String checkSql = ("SELECT * FROM payment WHERE student_id = ? AND year = ? AND month = ? ");
+            String checkSql = "SELECT * FROM payment WHERE student_id = ? AND year = ? AND month = ? ";
             PreparedStatement checkStatement = connection.prepareStatement(checkSql);
             checkStatement.setInt(1, student_id);
             checkStatement.setInt(2, year);
@@ -77,6 +79,7 @@ public class Student {
                 System.out.println("A payment already exists for the specified year and month");
                 return;
             }
+            resultSet.close();
             //insert date, time , payment status in the payment table 
             String sql = "INSERT INTO Payment (student_id, year, month, payment_status) VALUES(?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -91,4 +94,41 @@ public class Student {
         }
     }
 
+    public static void isMonthPayed(String first_name, String last_name, int student_id, int year, int month) {
+        try {
+            Connection connection = DatabaseConnector.getConnection();
+            String checkSql = "SELECT month, payment_status FROM payment JOIN Student ON Student.student_id = Payment.student_id WHERE first_name = ? AND last_name = ? AND year = ? AND month = ? ORDER BY month";
+            PreparedStatement statement = connection.prepareStatement(checkSql);
+            statement.setString(1, first_name);
+            statement.setString(2, last_name);
+            statement.setInt(3, year);
+            statement.setInt(4, month);
+            ResultSet resultSet = statement.executeQuery();
+            System.out.println("Month\tPayment Status");
+            System.out.println("----------------------");
+            while (resultSet.next()){
+                int checkedmonth = month;
+                String paymentStatus = resultSet.getString("payment_status");
+                System.out.println(month + "\t" + paymentStatus);
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+    }
+
 }
+
+//removing/deleting payment
+//removing student
+/*have they payed or not 
+ * query by year, where I can check through all the months 
+ * query by month
+ * which months are payes, Is month payed
+ */
+
+//last exam time
+//presences 
