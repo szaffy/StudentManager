@@ -1,7 +1,11 @@
+import java.time.Year;
+
 public class App {
     public static void main(String[] args){
-        Student student = new Student("Jennet", "Doe", 6);
-        student.addNewStudent(student);
+        //Student.addNewStudent("Jane", "Doe", 12);
+        Student.addPayment(4, 2022, 5, "Not payed");
+        
+        
     }
     
 }
